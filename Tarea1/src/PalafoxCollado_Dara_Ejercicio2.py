@@ -3,9 +3,7 @@ from random import choice, seed
 
 class Gen:
     """
-    Clase que representa un gen con atributos básicos y métodos
-    para simular su adaptación y regulación.
-
+    Clase que representa un gen con sus atributos y métodos.
     Atributos
     ----------
     nombre : str
@@ -15,22 +13,9 @@ class Gen:
     funcion : str
         Función biológica del gen.
     """
-
-    def __init__(self, nombre, estructura, funcion):
-        """
-        Inicializa una instancia de la clase Gen.
-
-        Parámetros
-        ----------
-        nombre : str
-            Nombre del gen.
-        estructura : str
-            Secuencia que compone el gen (por ejemplo: 'ATCG').
-        funcion : str
-            Función biológica del gen (por ejemplo: 'Transcripción').
-        """
+    def __init__(self, nombre, secuencia, funcion):
         self.nombre = nombre
-        self.estructura = estructura
+        self.secuencia = secuencia
         self.funcion = funcion
 
     def adaptacion(self):
@@ -59,18 +44,52 @@ class Gen:
         regulaciones = ["Regulación positiva", "Regulación negativa", "Feedback"]
         return choice(regulaciones)
 
+class tRNA(Gen):
+    "clase que representa un ARN de transferencia (tRNA) que hereda de la clase Gen con un atributo adicional y un método"
+    def __init__(self, nombre, secuencia, funcion, anticodon):
+        Gen.__init__(self, nombre, secuencia, funcion)
+        self.anticodon = anticodon
+
+    def longitud(self):
+        return len(self.secuencia)
+
+
+class RNANoCodificante(Gen):
+    "clase que representa un ARN no codificante que hereda de la clase Gen con un atributo adicional = tipo"
+    def __init__(self, nombre, secuencia, funcion, tipo):
+        Gen.__init__(self, nombre, secuencia, funcion)
+        self.tipo = tipo
+
+class Proteina(tRNA):
+    "clase que representa una proteína que hereda de la clase tRNA con un atributo adicional y un método"
+    def __init__(self, nombre, secuencia, funcion, anticodon, aminoacidos):
+        super().__init__(nombre, secuencia, funcion, anticodon)
+        self.aminoacidos = aminoacidos
+
+    def peso_molecular(self):
+        "función que calcula el peso molecular aproximado de la proteína basado en el número de aminoácidos"
+        # Peso molecular aproximado en daltons (Da) por aminoácido
+        num_aminoacidos = len(self.aminoacidos.split('-'))
+        Peso_molecular = num_aminoacidos * 110  # Aproximadamente 110 Da por aminoácido
+        return Peso_molecular
 
 # Instancia de la clase
 gen1 = Gen("ADN", "ATCG", "Transcripción")
 
-print("Nombre:", gen1.nombre)
-print("Secuencia:", gen1.estructura)
-print("Función:", gen1.funcion)
+print("GEN:", gen1.nombre,gen1.secuencia,gen1.funcion)
 print("Adaptación:", gen1.adaptacion())
 print("Regulación:", gen1.regulacion())
 
+trna1 = tRNA("tRNA", "AUGC", "Traducción", "UAC")
+print("\ntRNA:", trna1.nombre, trna1.secuencia, trna1.funcion, trna1.anticodon)
+print("longitud:", trna1.longitud())
 
+rna1 = RNANoCodificante("miRNA", "AUGCUA", "Regulación génica", "microRNA")
+print("\nRNA No Codificante:", rna1.nombre, rna1.secuencia, rna1.funcion, rna1.tipo)
 
+Proteina1 = Proteina("Hemoglobina", "AUGCUAGCUA", "Transporte de oxígeno", "UAC", "GLY-ALA-SER")
+print("\nProteina:", Proteina1.nombre, Proteina1.secuencia, Proteina1.funcion, Proteina1.anticodon, Proteina1.aminoacidos)
+print("Peso molecular:", Proteina1.peso_molecular())
 
 
 
