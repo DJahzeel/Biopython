@@ -61,17 +61,16 @@ class RNANoCodificante(Gen):
         self.tipo = tipo
 
 class Proteina(tRNA):
-    "clase que representa una proteína que hereda de la clase tRNA con un atributo adicional y un método"
+    "clase que representa una proteína que hereda de la clase tRNA con un atributo adicional = aminoacidos y un método"
     def __init__(self, nombre, secuencia, funcion, anticodon, aminoacidos):
         super().__init__(nombre, secuencia, funcion, anticodon)
         self.aminoacidos = aminoacidos
 
-    def peso_molecular(self):
-        "función que calcula el peso molecular aproximado de la proteína basado en el número de aminoácidos"
-        # Peso molecular aproximado en daltons (Da) por aminoácido
+    def longitud(self):
+        "regresa numero de nucleotidos y aminoacidos"
+        num_nucleotidos = len(self.secuencia)
         num_aminoacidos = len(self.aminoacidos.split('-'))
-        Peso_molecular = num_aminoacidos * 110  # Aproximadamente 110 Da por aminoácido
-        return Peso_molecular
+        return num_nucleotidos, num_aminoacidos
 
 # Instancia de la clase
 gen1 = Gen("ADN", "ATCG", "Transcripción")
@@ -89,7 +88,7 @@ print("\nRNA No Codificante:", rna1.nombre, rna1.secuencia, rna1.funcion, rna1.t
 
 Proteina1 = Proteina("Hemoglobina", "AUGCUAGCUA", "Transporte de oxígeno", "UAC", "GLY-ALA-SER")
 print("\nProteina:", Proteina1.nombre, Proteina1.secuencia, Proteina1.funcion, Proteina1.anticodon, Proteina1.aminoacidos)
-print("Peso molecular:", Proteina1.peso_molecular())
+print("longitud (nucleotidos, aminoacidos):", Proteina1.longitud())
 
 
 
